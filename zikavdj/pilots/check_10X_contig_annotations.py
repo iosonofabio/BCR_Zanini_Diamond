@@ -13,26 +13,34 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-if __name__ == '__main__':
-
-    fdn = '../../data/sequencing/'
+def load_annotations(fdn):
     samplenames = [sfdn[:-4] for sfdn in os.listdir(fdn) if sfdn.endswith('VDJ')]
 
     df = []
     for sn in samplenames:
         fn = fdn+sn+'-VDJ/filtered_contig_annotations.csv'
-        dfi = pd.read_csv(fn, sep=',', index_col='contig_id')
+        dfi = pd.read_csv(fn, sep=',')
         dfi['samplename'] = sn
+        dfi['id'] = dfi['samplename'] + '_' + dfi['contig_id']
         df.append(dfi)
     df = pd.concat(df, axis=0)
+    df.set_index('id', inplace=True)
+    return df
+
+
+if __name__ == '__main__':
+
+    fdn = '../../data/sequencing/'
+    df = load_annotations(fdn)
+    samplenames = list(df['samplename'].unique())
 
     print('Count clonotypes')
     clonotypes_u = df['raw_clonotype_id'].unique()
     print('# clonal families: {:}'.format(len(clonotypes_u) - 1))
 
     print('Plot histogram of heavy and light chain clonotype sizes')
-    fig, axs = plt.subplots(1, 3, figsize=(10, 4), sharex=True, sharey=True)
     kinds = ['IGH', 'IGK', 'IGL']
+    fig, axs = plt.subplots(1, 3, figsize=(10, 4), sharex=True, sharey=True)
     colors = sns.color_palette('Set1', n_colors=3)
     for isn, sn in enumerate(samplenames):
         ax = axs[isn]
@@ -79,17 +87,17 @@ if __name__ == '__main__':
 
     # NOTE: the names do not match, so they could be different?
 
-    print('Find the cells within the big clones')
-    from collections import defaultdict
-    clonotypes_cells = defaultdict(list)
-    for kind in kinds:
-        for clonotype in big_clonotypes[kind]:
-            ind = (dfs['raw_clonotype_id'] == clonotype) & (dfs['c_gene'].str.startswith(kind))
-            bcs = dfs.loc[ind, 'barcode'].unique()
-            for bc in bcs:
-                clonotypes_cells[bc].append((kind, clonotype))
-    clonodouble = {} 
-    for kp in 
+    #print('Find the cells within the big clones')
+    #from collections import defaultdict
+    #clonotypes_cells = defaultdict(list)
+    #for kind in kinds:
+    #    for clonotype in big_clonotypes[kind]:
+    #        ind = (dfs['raw_clonotype_id'] == clonotype) & (dfs['c_gene'].str.startswith(kind))
+    #        bcs = dfs.loc[ind, 'barcode'].unique()
+    #        for bc in bcs:
+    #            clonotypes_cells[bc].append((kind, clonotype))
+    #clonodouble = {} 
+    #for kp in 
 
     plt.ion()
     plt.show()
