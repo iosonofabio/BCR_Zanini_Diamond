@@ -1,0 +1,50 @@
+io:
+ datasets:
+  cd137:
+   path: ../../data/sequencing/anti-CD137_7dpi-mRNA/filtered_feature_bc_matrix.loom
+   format: loom
+   axis_samples: columns
+   index_samples: barcode
+   index_features: id
+   bit_precision: 32
+
+  isotype_control:
+   path: ../../data/sequencing/isotype_control-mRNA/filtered_feature_bc_matrix.loom
+   format: loom
+   axis_samples: columns
+   index_samples: barcode
+   index_features: id
+   bit_precision: 32
+
+  uninfected:
+   path: ../../data/sequencing/M_GV-Na_ve-Na_ve-mRNA/filtered_feature_bc_matrix.loom
+   format: loom
+   axis_samples: columns
+   index_samples: barcode
+   index_features: id
+   bit_precision: 32
+
+  cd137_cpm:
+   path: ../../data/sequencing/anti-CD137_7dpi-mRNA/filtered_feature_bc_matrix_normalized.loom
+   format: loom
+   axis_samples: columns
+   index_samples: barcode
+   index_features: id
+   bit_precision: 32
+   normalized: coutns_per_million
+
+  isotype_control_cpm:
+   path: ../../data/sequencing/isotype_control-mRNA/filtered_feature_bc_matrix_normalized.loom
+   format: loom
+   axis_samples: columns
+   index_samples: barcode
+   index_features: id
+   bit_precision: 32
+  
+  uninfected_cpm:
+   path: ../../data/sequencing/M_GV-Na_ve-Na_ve-mRNA/filtered_feature_bc_matrix_normalized.loom
+   format: loom
+   axis_samples: columns
+   index_samples: barcode
+   index_features: id
+   bit_precision: 32 
